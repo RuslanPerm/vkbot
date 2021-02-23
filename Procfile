@@ -1,1 +1,1 @@
-web: python vk_bot1.py runserver 0.0.0.0:5000
+worker: python -u vk_bot1.py
