@@ -1,6 +1,7 @@
 import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 import random
+from pprint import pprint
 import requests
 
 url = "https://weatherbit-v1-mashape.p.rapidapi.com/current"
@@ -18,7 +19,7 @@ def main():
             vk = vk_session.get_api()
             if event.obj.message['text'].startswith('!рандом'):
                 if event.from_user:
-                    vk.messages.send(user_id=event.obj['user_id'],
+                    vk.messages.send(user_id=event.obj['message']['from_id'],
                                      message=f"{random.randint(0, 100)}",
                                      random_id=random.randint(0, 2 ** 64))
                 elif event.from_chat:
@@ -33,7 +34,7 @@ def main():
                 else:
                     answer = "решка"
                 if event.from_user:
-                    vk.messages.send(user_id=event.obj['user_id'],
+                    vk.messages.send(user_id=event.obj['message']['from_id'],
                                      message=f"{answer}",
                                      random_id=random.randint(0, 2 ** 64))
                 elif event.from_chat:
@@ -43,7 +44,7 @@ def main():
 
             elif event.obj.message['text'].startswith('!колбасу халяль куриную мне за 90 рублей'):
                 if event.from_user:
-                    vk.messages.send(user_id=event.obj['user_id'],
+                    vk.messages.send(user_id=event.obj['message']['from_id'],
                                      message=f"🌭",
                                      random_id=random.randint(0, 2 ** 64))
                 elif event.from_chat:
@@ -63,14 +64,19 @@ def main():
 
                 response = requests.request("GET", url, headers=headers, params=querystring)
 
+                wheather = response.json()['data'][0]
                 if event.from_user:
-                    vk.messages.send(user_id=event.obj['user_id'],
-                                     message=f"{response.text}",
+
+                    vk.messages.send(user_id=event.obj['message']['from_id'],
+                                     message=f"{wheather['city_name']}, {wheather['datetime']}, {wheather['temp']}",
                                      random_id=random.randint(0, 2 ** 64))
+                    pprint(response.json()['data'])
+
                 elif event.from_chat:
                     vk.messages.send(chat_id=event.chat_id,
-                                     message=f"{response.text}",
+                                     message=f"{wheather['city_name']}, {wheather['datetime']}, {wheather['temp']}",
                                      random_id=random.randint(0, 2 ** 64))
+
 # https://rapidapi.com/weatherbit/api/weather/endpoints
 
 
