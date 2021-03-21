@@ -27,7 +27,7 @@ def main():
                                      message=f"{random.randint(0, 100)}",
                                      random_id=random.randint(0, 2 ** 64))
 
-            if event.obj.message['text'].startswith('!помощь'):
+            elif event.obj.message['text'].startswith('!помощь'):
                 if event.from_user:
                     vk.messages.send(user_id=event.obj['message']['from_id'],
                                      message="Команды: \n !рандом - выводит случайное число от 1 до 100\n "
@@ -90,6 +90,19 @@ def main():
                     vk.messages.send(chat_id=event.chat_id,
                                      message=f"{wheather['city_name']}, {wheather['datetime']}, {wheather['temp']}",
                                      random_id=random.randint(0, 2 ** 64))
+
+            else:
+                if event.from_user:
+
+                    vk.messages.send(user_id=event.obj['message']['from_id'],
+                                     message="не знаю чё ты мне написал, пока не умею такое читать, но тебе того же!",
+                                     random_id=random.randint(0, 2 ** 64))
+
+                elif event.from_chat:
+                    vk.messages.send(chat_id=event.chat_id,
+                                     message="не знаю чё ты мне написал, пока не умею такое читать, но тебе того же!",
+                                     random_id=random.randint(0, 2 ** 64))
+
 
 # https://rapidapi.com/weatherbit/api/weather/endpoints
 
