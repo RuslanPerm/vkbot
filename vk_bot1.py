@@ -20,7 +20,21 @@ def main():
             if event.obj.message['text'].startswith('!рандом'):
                 if event.from_user:
                     vk.messages.send(user_id=event.obj['message']['from_id'],
+                                     message=f"{random.randint(0, 101)}",
+                                     random_id=random.randint(0, 2 ** 64))
+                elif event.from_chat:
+                    vk.messages.send(chat_id=event.chat_id,
                                      message=f"{random.randint(0, 100)}",
+                                     random_id=random.randint(0, 2 ** 64))
+
+            if event.obj.message['text'].startswith('!помощь'):
+                if event.from_user:
+                    vk.messages.send(user_id=event.obj['message']['from_id'],
+                                     message="Команды: \n !рандом - выводит случайное число от 1 до 100\n "
+                                             "!орёл и решка - подкидывает монету и выводит результат\n"
+                                             "!колбасу халяль куриную мне за 90 рублей - выводит колбасу халяль смайл\n"
+                                             "!погода шш дд - выводит погоду на основе координат вместо дд целое число"
+                                             " широты, вместо дд целое число долготы ",
                                      random_id=random.randint(0, 2 ** 64))
                 elif event.from_chat:
                     vk.messages.send(chat_id=event.chat_id,
